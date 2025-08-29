@@ -14,20 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.voto-pendente.exchange}")
-    private String exchangeVotoPendente;
-
-    @Value("${rabbitmq.voto-concluido.exchange}")
-    private String exchangeVotoConcluido;
+    @Value("${rabbitmq.votacao.exchange}")
+    private String exchangeVotacao;
 
     @Bean
-    public Queue criarFilaVotoPendente() {
-        return QueueBuilder.durable("voto-pendente").build();
-    }
-
-    @Bean
-    public Queue criarFilaVotoConcluido() {
-        return QueueBuilder.durable("voto-concluido").build();
+    public Queue criarFilaVotacao() {
+        return QueueBuilder.nonDurable("votacao").build();
     }
 
     @Bean
@@ -41,27 +33,15 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public FanoutExchange criarFanoutExchangeVotoPendente() {
-        return ExchangeBuilder.fanoutExchange(exchangeVotoPendente).build();
+    public FanoutExchange criarFanoutExchangeVotacao() {
+        return ExchangeBuilder.fanoutExchange(exchangeVotacao).build();
     }
 
     @Bean
-    public FanoutExchange criarFanoutExchangeVotoConcluido() {
-        return ExchangeBuilder.fanoutExchange(exchangeVotoConcluido).build();
+    public Binding criarBindingVotacao() {
+        return BindingBuilder.bind(criarFilaVotacao()).
+                to(criarFanoutExchangeVotacao());
     }
-
-    @Bean
-    public Binding criarBindingVotoPendente() {
-        return BindingBuilder.bind(criarFilaVotoPendente()).
-                to(criarFanoutExchangeVotoPendente());
-    }
-
-    @Bean
-    public Binding criarBindingVotoConcluido() {
-        return BindingBuilder.bind(criarFilaVotoConcluido()).
-                to(criarFanoutExchangeVotoConcluido());
-    }
-
 
     @Bean
     public MessageConverter jackson2JsonMessageConverter() {
