@@ -4,8 +4,7 @@ public class VotoDto {
 
     private int voto;
 
-    public VotoDto() {
-    }
+    public VotoDto() {}
 
     public VotoDto(int voto) {
         this.voto = voto;
