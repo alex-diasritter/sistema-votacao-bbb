@@ -10,7 +10,7 @@ public class VotoService {
     private String exchange;
     private NotificacaoService notificacaoService;
 
-    public VotoService(NotificacaoService notificacaoService, @Value("${rabbitmq.voto-pendente.exchange}") String exchange) {
+    public VotoService(NotificacaoService notificacaoService, @Value("${rabbitmq.votacao.exchange}") String exchange) {
         this.exchange = exchange;
         this.notificacaoService = notificacaoService;
     }
